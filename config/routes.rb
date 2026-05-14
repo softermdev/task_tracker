@@ -30,4 +30,19 @@ Rails.application.routes.draw do
   # Render dynamic PWA files from app/views/pwa/* (remember to link manifest in application.html.erb)
   # get "manifest" => "rails/pwa#manifest", as: :pwa_manifest
   # get "service-worker" => "rails/pwa#service_worker", as: :pwa_service_worker
+
+  namespace :api do
+    namespace :v1 do
+      resources :tasks, only: [:index]
+      get "tasks", to: "tasks#index"
+    end
+    namespace :v1 do
+      resources :projects, only: [:index] 
+      get "projects", to: "projects#index"
+    end
+      
+  end
+
+  
+
 end
