@@ -42,9 +42,9 @@
     <% if task.assignee %>
       <div class="flex items-center">
         <div class="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-1.5">
-          <%= task.assignee.email.first.upcase %>
+          <%= user_initial(task.assignee) %>
         </div>
-        <span class="text-gray-400 text-xs"><%= task.assignee.email.split('@').first %></span>
+        <span class="text-gray-400 text-xs"><%= user_display_name(task.assignee) %></span>
       </div>
     <% end %>
     
