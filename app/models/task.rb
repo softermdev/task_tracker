@@ -12,7 +12,7 @@ class Task < ApplicationRecord
 
   # Validations
   validates :title, presence: true, length: { minimum: 3, maximum: 200 }
-  validates :status, presence: true, inclusion: { in: %w[todo in_progress done] }
+  validates :status, presence: true, inclusion: { in: %w[todo in_progress review done] }
   validates :priority, inclusion: { in: %w[low medium high], allow_nil: true }
   validates :project, presence: true
   validates :creator, presence: true
