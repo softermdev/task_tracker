@@ -24,7 +24,20 @@
     <%= javascript_importmap_tags %>
   </head>
 
-  <body class="bg-[#39311D]">
+  <body class="bg-gray-900">
+    <% if user_signed_in? %>
+      <div class="flex h-screen bg-gray-900 overflow-hidden font-sans">
+        <%= render 'shared/sidebar' %>
+        <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
+          <div class="absolute top-0 left-0 w-full h-96 bg-yellow-500/5 filter blur-[100px] pointer-events-none"></div>
+          <div class="flex-1 overflow-y-auto custom-scrollbar relative z-10">
+            <%= yield %>
+          </div>
+        </main>
+      </div>
+    <% else %>
+      <%= yield %>
+    <% end %>
 
     <!-- Toast Notifications -->
     <div id="toast-container" class="fixed right-5 bottom-5 z-50 flex flex-col gap-3 pointer-events-none">
@@ -73,8 +86,6 @@
       <% end %>
     </div>
 
-    <%= yield %>
-
     <style>
       @keyframes slideIn {
         from {
@@ -96,6 +107,23 @@
       
       .toast-notification {
         animation: slideIn 0.3s ease-out;
+      }
+    </style>
+    <style>
+      /* Custom scrollbar for a cleaner look */
+      .custom-scrollbar::-webkit-scrollbar {
+        width: 8px;
+        height: 8px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-track {
+        background: rgba(31, 41, 55, 0.5);
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb {
+        background: rgba(75, 85, 99, 0.8);
+        border-radius: 4px;
+      }
+      .custom-scrollbar::-webkit-scrollbar-thumb:hover {
+        background: rgba(107, 114, 128, 1);
       }
     </style>
   </body>

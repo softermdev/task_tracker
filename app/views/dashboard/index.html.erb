@@ -1,75 +1,21 @@
-<div class="flex h-screen bg-gray-900 overflow-hidden font-sans">
-  
-  <aside class="w-64 bg-gray-900 flex-shrink-0 border-r border-gray-800 flex flex-col justify-between hidden md:flex relative z-20">
+<% content_for :title, "Dashboard" %>
+
+<div class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/60 pt-6 pb-6 px-6 sm:px-10">
+  <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-7xl mx-auto">
     <div>
-      <div class="h-20 flex items-center px-6 border-b border-gray-800/60">
-        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mr-3 shadow-lg">
-          <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-          </svg>
-        </div>
-        <span class="text-white text-lg font-bold tracking-wide">Task Tracker</span>
-      </div>
-
-      <nav class="p-4 space-y-2 mt-2">
-        <%= link_to root_path, class: "flex items-center px-4 py-3 bg-gray-800/80 text-yellow-500 rounded-xl group border border-gray-700/50 shadow-sm" do %>
-          <svg class="w-5 h-5 mr-3" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2V6zM14 6a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2V6zM4 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2H6a2 2 0 01-2-2v-2zM14 16a2 2 0 012-2h2a2 2 0 012 2v2a2 2 0 01-2 2h-2a2 2 0 01-2-2v-2z"></path>
-          </svg>
-          <span class="font-medium">Dashboard</span>
-        <% end %>
-
-        <%= link_to projects_path, class: "flex items-center px-4 py-3 text-gray-400 hover:bg-gray-800/50 hover:text-white rounded-xl group transition-all duration-200" do %>
-          <svg class="w-5 h-5 mr-3 group-hover:text-yellow-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
-          </svg>
-          <span class="font-medium">Projects</span>
-        <% end %>
-      </nav>
+      <h1 class="text-3xl font-bold text-white mb-1 tracking-tight">Task Board</h1>
+      <p class="text-sm text-gray-400">Drag and drop tasks to update their status</p>
     </div>
-
-    <div class="p-4 border-t border-gray-800/60 bg-gray-900">
-      <div class="flex items-center p-3 mb-2 bg-gray-800/40 rounded-xl border border-gray-700/30">
-        <div class="w-10 h-10 rounded-full bg-gradient-to-r from-gray-700 to-gray-600 flex items-center justify-center text-white font-bold border border-gray-500 mr-3 flex-shrink-0">
-          <%= current_user ? current_user.email[0].upcase : 'T' %>
-        </div>
-        <div class="overflow-hidden">
-          <p class="text-sm font-semibold text-white truncate"><%= current_user ? (current_user.email.split('@').first.capitalize) : "Test" %></p>
-          <p class="text-xs text-gray-500 truncate"><%= current_user ? current_user.email : "test@co.co" %></p>
-        </div>
-      </div>
-      
-      <%= button_to destroy_user_session_path, method: :delete, class: "w-full flex items-center justify-center px-4 py-2.5 text-sm text-gray-400 hover:text-red-400 hover:bg-red-500/10 rounded-lg transition-colors duration-200" do %>
-        <svg class="w-4 h-4 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"></path>
+    <div>
+      <%= link_to new_project_path, class: "inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 rounded-lg transition-all duration-200 font-semibold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:shadow-[0_0_20px_rgba(234,179,8,0.5)] focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-900" do %>
+        <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
         </svg>
-        Logout
+        New Project
       <% end %>
     </div>
-  </aside>
-
-  <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
-    
-    <div class="absolute top-0 left-0 w-full h-96 bg-yellow-500/5 filter blur-[100px] pointer-events-none"></div>
-
-    <div class="flex-1 overflow-y-auto custom-scrollbar relative z-10">
-      
-      <div class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/60 pt-6 pb-6 px-6 sm:px-10">
-        <div class="flex flex-col sm:flex-row items-start sm:items-center justify-between gap-4 max-w-7xl mx-auto">
-          <div>
-            <h1 class="text-3xl font-bold text-white mb-1 tracking-tight">Task Board</h1>
-            <p class="text-sm text-gray-400">Drag and drop tasks to update their status</p>
-          </div>
-          <div>
-            <%= link_to new_project_path, class: "inline-flex items-center px-5 py-2.5 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 rounded-lg transition-all duration-200 font-semibold shadow-[0_0_15px_rgba(234,179,8,0.3)] hover:shadow-[0_0_20px_rgba(234,179,8,0.5)] focus:ring-2 focus:ring-yellow-500 focus:ring-offset-2 focus:ring-offset-gray-900" do %>
-              <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
-              </svg>
-              New Project
-            <% end %>
-          </div>
-        </div>
-      </div>
+  </div>
+</div>
 
       <div class="max-w-7xl mx-auto px-6 sm:px-10 py-8">
         <div class="grid grid-cols-2 md:grid-cols-5 gap-4 mb-8">
@@ -302,9 +248,6 @@
           </div>
         </div>
       </div>
-    </div>
-  </main>
-</div>
 
 <style>
   /* Custom scrollbar for a cleaner look */
