@@ -4,29 +4,78 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-    # Define abilities for the user here. For example:
-    #
-    #   return unless user.present?
-    #   can :read, :all
-    #   return unless user.admin?
-    #   can :manage, :all
-    #
-    # The first argument to `can` is the action you are giving the user
-    # permission to do.
-    # If you pass :manage it will apply to every action. Other common actions
-    # here are :read, :create, :update and :destroy.
-    #
-    # The second argument is the resource the user can perform the action on.
-    # If you pass :all it will apply to every resource. Otherwise pass a Ruby
-    # class of the resource.
-    #
-    # The third argument is an optional hash of conditions to further filter the
-    # objects.
-    # For example, here the user can only update published articles.
-    #
-    #   can :update, Article, published: true
-    #
-    # See the wiki for details:
-    # https://github.com/CanCanCommunity/cancancan/blob/develop/docs/define_check_abilities.md
+    user ||= User.new # guest user (not logged in)
+
+    if user.admin?
+      # Admin can do everything
+      can :manage, :all
+    else
+      # Guest abilities
+      return unless user.persisted?
+
+      # User can manage their own setting
+      can :manage, Setting, user_id: user.id
+
+      # Project abilities
+      can :read, Project do |project|
+        project.owner_id == user.id || project.members.include?(user)
+      end
+
+      can :create, Project
+
+      can :update, Project do |project|
+        project.owner_id == user.id
+      end
+
+      can :destroy, Project do |project|
+        project.owner_id == user.id
+      end
+
+      # Project Member abilities
+      can :create, ProjectMember do |pm|
+        pm.project.owner_id == user.id
+      end
+
+      can :destroy, ProjectMember do |pm|
+        pm.project.owner_id == user.id
+      end
+
+      # Task abilities
+      can :read, Task do |task|
+        task.project.owner_id == user.id || task.project.members.include?(user)
+      end
+
+      can :create, Task do |task|
+        task.project.owner_id == user.id || task.project.members.include?(user)
+      end
+
+      can :update, Task do |task|
+        task.project.owner_id == user.id || task.project.members.include?(user)
+      end
+
+      can :destroy, Task do |task|
+        task.project.owner_id == user.id
+      end
+
+      # Label abilities
+      can :manage, Label do |label|
+        label.project.owner_id == user.id || label.project.members.include?(user)
+      end
+
+      # Comment abilities
+      can :read, Comment do |comment|
+        comment.task.project.owner_id == user.id || comment.task.project.members.include?(user)
+      end
+
+      can :create, Comment do |comment|
+        comment.task.project.owner_id == user.id || comment.task.project.members.include?(user)
+      end
+
+      can :update, Comment, user_id: user.id
+
+      can :destroy, Comment do |comment|
+        comment.user_id == user.id || comment.task.project.owner_id == user.id
+      end
+    end
   end
 end

@@ -1,4 +1,25 @@
 Rails.application.routes.draw do
+  get "dashboard/index"
+  get "project_members/create"
+  get "project_members/destroy"
+  get "labels/create"
+  get "labels/destroy"
+  get "comments/create"
+  get "comments/destroy"
+  get "tasks/index"
+  get "tasks/show"
+  get "tasks/new"
+  get "tasks/create"
+  get "tasks/edit"
+  get "tasks/update"
+  get "tasks/destroy"
+  get "projects/index"
+  get "projects/show"
+  get "projects/new"
+  get "projects/create"
+  get "projects/edit"
+  get "projects/update"
+  get "projects/destroy"
   devise_for :users
   # Define your application routes per the DSL in https://guides.rubyonrails.org/routing.html
 
