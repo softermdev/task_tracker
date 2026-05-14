@@ -17,6 +17,12 @@ class Task < ApplicationRecord
   validates :project, presence: true
   validates :creator, presence: true
 
+  # Callbacks
+  after_save :add_assignee_to_project_members, if: :assignee_id_changed?
+  
+  # Turbo Streams Broadcasts
+  broadcasts_to ->(task) { [task.project, "tasks"] }, inserts_by: :prepend, target: "tasks_list"
+
   # Scopes
   scope :active, -> { where(deleted_at: nil) }
   scope :archived, -> { where.not(deleted_at: nil) }
@@ -41,5 +47,15 @@ class Task < ApplicationRecord
 
   def overdue?
     due_date.present? && due_date < Date.today && status != 'done'
+  end
+
+  private
+
+  def add_assignee_to_project_members
+    return unless assignee_id.present?
+    return if project.member?(assignee)
+    
+    # Add assignee as project member if not already a member
+    project.add_member(assignee, role: 'member')
   end
 end

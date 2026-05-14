@@ -18,43 +18,29 @@
   <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
     <!-- Tasks Section -->
     <div class="lg:col-span-2">
+      <%= turbo_stream_from @project, "tasks" %>
       <div class="bg-white rounded-lg shadow p-6">
         <div class="flex justify-between items-center mb-4">
           <h2 class="text-2xl font-semibold">Tasks</h2>
           <%= link_to "New Task", new_project_task_path(@project), class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600" %>
         </div>
 
-        <% if @tasks.any? %>
-          <div class="space-y-4">
-            <% @tasks.group_by(&:status).each do |status, tasks| %>
-              <div>
-                <h3 class="font-semibold text-lg mb-2 capitalize"><%= status.humanize %></h3>
-                <div class="space-y-2">
-                  <% tasks.each do |task| %>
-                    <div class="border rounded p-4 hover:bg-gray-50">
-                      <%= link_to task.title, project_task_path(@project, task), class: "text-blue-600 hover:underline font-medium" %>
-                      <div class="flex gap-2 mt-2 text-sm">
-                        <span class="bg-gray-100 px-2 py-1 rounded"><%= task.priority %></span>
-                        <% if task.due_date %>
-                          <span class="<%= task.overdue? ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700' %> px-2 py-1 rounded">
-                            <%= task.due_date %>
-                          </span>
-                        <% end %>
-                        <% if task.assignee %>
-                          <span class="bg-green-100 text-green-700 px-2 py-1 rounded">
-                            <%= task.assignee.email %>
-                          </span>
-                        <% end %>
-                      </div>
-                    </div>
-                  <% end %>
+        <div id="tasks_list">
+          <% if @tasks.any? %>
+            <div class="space-y-4">
+              <% @tasks.group_by(&:status).each do |status, tasks| %>
+                <div>
+                  <h3 class="font-semibold text-lg mb-2 capitalize"><%= status.humanize %></h3>
+                  <div class="space-y-2">
+                    <%= render tasks %>
+                  </div>
                 </div>
-              </div>
-            <% end %>
-          </div>
-        <% else %>
-          <p class="text-gray-500">No tasks yet. Create your first task!</p>
-        <% end %>
+              <% end %>
+            </div>
+          <% else %>
+            <p class="text-gray-500">No tasks yet. Create your first task!</p>
+          <% end %>
+        </div>
       </div>
     </div>
 

@@ -1,0 +1,17 @@
+<div id="<%= dom_id task %>" class="border rounded p-4 hover:bg-gray-50">
+  <%= link_to task.title, project_task_path(task.project, task), class: "text-blue-600 hover:underline font-medium" %>
+  <div class="flex gap-2 mt-2 text-sm">
+    <span class="bg-gray-100 px-2 py-1 rounded capitalize"><%= task.priority %></span>
+    <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded capitalize"><%= task.status.humanize %></span>
+    <% if task.due_date %>
+      <span class="<%= task.overdue? ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700' %> px-2 py-1 rounded">
+        <%= task.due_date %>
+      </span>
+    <% end %>
+    <% if task.assignee %>
+      <span class="bg-green-100 text-green-700 px-2 py-1 rounded">
+        <%= task.assignee.email %>
+      </span>
+    <% end %>
+  </div>
+</div>
