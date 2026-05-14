@@ -1,12 +1,19 @@
-<aside class="w-64 bg-gray-900 flex-shrink-0 border-r border-gray-800 flex flex-col justify-between hidden md:flex relative z-20">
+<aside id="sidebar" class="fixed md:static inset-y-0 left-0 z-40 w-64 bg-gray-900 flex-shrink-0 border-r border-gray-800 flex flex-col justify-between md:flex transition-transform duration-300 ease-in-out -translate-x-full md:translate-x-0">
   <div>
-    <div class="h-20 flex items-center px-6 border-b border-gray-800/60">
-      <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mr-3 shadow-lg">
-        <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
-        </svg>
+    <div class="h-20 flex items-center justify-between px-6 border-b border-gray-800/60">
+      <div class="flex items-center">
+        <div class="w-8 h-8 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mr-3 shadow-lg">
+          <svg class="w-5 h-5 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+          </svg>
+        </div>
+        <span class="text-white text-lg font-bold tracking-wide">Task Tracker</span>
       </div>
-      <span class="text-white text-lg font-bold tracking-wide">Task Tracker</span>
+      <button type="button" id="sidebar-close-btn" class="md:hidden p-2 -mr-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors">
+        <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      </button>
     </div>
 
     <nav class="p-4 space-y-2 mt-2">
@@ -62,6 +69,22 @@
 
 <script>
 document.addEventListener('turbo:load', function() {
+  const sidebar = document.getElementById('sidebar');
+  const closeBtn = document.getElementById('sidebar-close-btn');
+  const backdrop = document.getElementById('sidebar-backdrop');
+
+  if (closeBtn && sidebar) {
+    closeBtn.addEventListener('click', function() {
+      sidebar.classList.add('-translate-x-full');
+      sidebar.classList.remove('translate-x-0');
+      if (backdrop) {
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 300);
+      }
+      document.body.style.overflow = '';
+    });
+  }
+
   const profileMenu = document.querySelector('[data-controller="profile-menu"]');
   if (!profileMenu) return;
 

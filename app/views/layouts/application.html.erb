@@ -28,8 +28,31 @@
     <% if user_signed_in? %>
       <div class="flex h-screen bg-gray-900 overflow-hidden font-sans">
         <%= render 'shared/sidebar' %>
+        <div id="sidebar-backdrop" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden md:hidden transition-opacity duration-300 opacity-0"></div>
         <main class="flex-1 flex flex-col h-screen overflow-hidden bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900 relative">
           <div class="absolute top-0 left-0 w-full h-96 bg-yellow-500/5 filter blur-[100px] pointer-events-none"></div>
+
+          <div class="md:hidden flex items-center justify-between px-4 h-14 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/60 relative z-10 flex-shrink-0">
+            <button type="button" id="mobile-menu-btn" class="p-2 -ml-2 text-gray-400 hover:text-white hover:bg-gray-800 rounded-lg transition-colors">
+              <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+              </svg>
+            </button>
+            <div class="flex items-center">
+              <div class="w-7 h-7 rounded-lg bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center mr-2 shadow-lg">
+                <svg class="w-4 h-4 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2.5" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2m-6 9l2 2 4-4"></path>
+                </svg>
+              </div>
+              <span class="text-white font-bold tracking-wide">Task Tracker</span>
+            </div>
+            <%= link_to profile_path, class: "p-2 -mr-2" do %>
+              <div class="w-8 h-8 rounded-full bg-gradient-to-br from-yellow-400 to-yellow-600 flex items-center justify-center text-gray-900 font-bold text-sm shadow-lg">
+                <%= (current_user&.name.presence || current_user&.email || 'T').first.upcase %>
+              </div>
+            <% end %>
+          </div>
+
           <div class="flex-1 overflow-y-auto custom-scrollbar relative z-10">
             <%= yield %>
           </div>
@@ -39,7 +62,6 @@
       <%= yield %>
     <% end %>
 
-    <!-- Toast Notifications -->
     <div id="toast-container" class="fixed right-5 bottom-5 z-50 flex flex-col gap-3 pointer-events-none">
       <% flash.each do |type, message| %>
         <div class="toast-notification pointer-events-auto transform transition-all duration-300 ease-out" 
@@ -50,7 +72,6 @@
                           type == 'alert' ? 'bg-gradient-to-r from-red-900/95 to-red-800/95 border-red-600/50' : 
                           type == 'success' ? 'bg-gradient-to-r from-yellow-900/95 to-yellow-800/95 border-yellow-600/50' :
                           'bg-gradient-to-r from-gray-900/95 to-gray-800/95 border-gray-600/50' %>">
-            <!-- Icon -->
             <div class="flex-shrink-0 mt-0.5">
               <% if type == 'notice' || type == 'success' %>
                 <svg class="w-6 h-6 text-green-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -66,15 +87,11 @@
                 </svg>
               <% end %>
             </div>
-            
-            <!-- Message -->
             <div class="flex-1 pt-0.5">
               <p class="text-sm font-medium text-white leading-relaxed">
                 <%= message %>
               </p>
             </div>
-            
-            <!-- Close Button -->
             <button onclick="this.closest('.toast-notification').style.animation='fadeOut 0.2s ease-out forwards'" 
                     class="flex-shrink-0 text-gray-400 hover:text-white transition-colors duration-200">
               <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -88,29 +105,15 @@
 
     <style>
       @keyframes slideIn {
-        from {
-          transform: translateX(120%);
-          opacity: 0;
-        }
-        to {
-          transform: translateX(0);
-          opacity: 1;
-        }
+        from { transform: translateX(120%); opacity: 0; }
+        to { transform: translateX(0); opacity: 1; }
       }
-      
       @keyframes fadeOut {
-        to {
-          opacity: 0;
-          transform: translateX(120%);
-        }
+        to { opacity: 0; transform: translateX(120%); }
       }
-      
       .toast-notification {
         animation: slideIn 0.3s ease-out;
       }
-    </style>
-    <style>
-      /* Custom scrollbar for a cleaner look */
       .custom-scrollbar::-webkit-scrollbar {
         width: 8px;
         height: 8px;
@@ -126,5 +129,45 @@
         background: rgba(107, 114, 128, 1);
       }
     </style>
+
+    <script>
+    document.addEventListener('turbo:load', function() {
+      const sidebar = document.getElementById('sidebar');
+      const backdrop = document.getElementById('sidebar-backdrop');
+      const menuBtn = document.getElementById('mobile-menu-btn');
+
+      if (!sidebar || !menuBtn) return;
+
+      function openSidebar() {
+        sidebar.classList.remove('-translate-x-full');
+        sidebar.classList.add('translate-x-0');
+        backdrop.classList.remove('hidden');
+        requestAnimationFrame(() => backdrop.classList.remove('opacity-0'));
+        document.body.style.overflow = 'hidden';
+      }
+
+      function closeSidebar() {
+        sidebar.classList.add('-translate-x-full');
+        sidebar.classList.remove('translate-x-0');
+        backdrop.classList.add('opacity-0');
+        setTimeout(() => backdrop.classList.add('hidden'), 300);
+        document.body.style.overflow = '';
+      }
+
+      menuBtn.addEventListener('click', openSidebar);
+      backdrop.addEventListener('click', closeSidebar);
+
+      sidebar.querySelectorAll('a, button').forEach(function(el) {
+        if (el.type === 'submit') return;
+        el.addEventListener('click', function() {
+          if (window.innerWidth < 768) closeSidebar();
+        });
+      });
+
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeSidebar();
+      });
+    });
+    </script>
   </body>
 </html>
