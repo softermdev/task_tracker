@@ -1,2 +1,91 @@
-<h1>Tasks#show</h1>
-<p>Find me in app/views/tasks/show.html.erb</p>
+<div class="container mx-auto px-4 py-8 max-w-4xl">
+  <div class="bg-white rounded-lg shadow p-6">
+    <div class="flex justify-between items-start mb-6">
+      <div class="flex-1">
+        <h1 class="text-3xl font-bold mb-2"><%= @task.title %></h1>
+        <div class="flex gap-2 mb-4">
+          <span class="bg-blue-100 text-blue-800 px-3 py-1 rounded text-sm"><%= @task.status.humanize %></span>
+          <span class="bg-gray-100 text-gray-800 px-3 py-1 rounded text-sm"><%= @task.priority.humanize %></span>
+          <% if @task.due_date %>
+            <span class="<%= @task.overdue? ? 'bg-red-100 text-red-800' : 'bg-green-100 text-green-800' %> px-3 py-1 rounded text-sm">
+              Due: <%= @task.due_date %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+      <div class="flex gap-2">
+        <% if can? :update, @task %>
+          <%= link_to "Edit", edit_project_task_path(@project, @task), class: "bg-yellow-500 text-white px-4 py-2 rounded hover:bg-yellow-600" %>
+        <% end %>
+        <% if can? :destroy, @task %>
+          <%= button_to "Delete", project_task_path(@project, @task), method: :delete, data: { confirm: "Are you sure?" }, class: "bg-red-500 text-white px-4 py-2 rounded hover:bg-red-600" %>
+        <% end %>
+        <%= link_to "Back", @project, class: "bg-gray-300 text-gray-700 px-4 py-2 rounded hover:bg-gray-400" %>
+      </div>
+    </div>
+
+    <div class="mb-6">
+      <h2 class="text-lg font-semibold mb-2">Description</h2>
+      <p class="text-gray-700"><%= @task.description || "No description provided" %></p>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4 mb-6">
+      <div>
+        <h3 class="font-semibold text-sm text-gray-600">Created by</h3>
+        <p><%= @task.creator.email %></p>
+      </div>
+      <div>
+        <h3 class="font-semibold text-sm text-gray-600">Assigned to</h3>
+        <p><%= @task.assignee&.email || "Unassigned" %></p>
+      </div>
+    </div>
+
+    <% if @task.labels.any? %>
+      <div class="mb-6">
+        <h3 class="font-semibold text-sm text-gray-600 mb-2">Labels</h3>
+        <div class="flex flex-wrap gap-2">
+          <% @task.labels.each do |label| %>
+            <span class="px-3 py-1 rounded text-white text-sm" style="background-color: <%= label.color %>">
+              <%= label.name %>
+            </span>
+          <% end %>
+        </div>
+      </div>
+    <% end %>
+
+    <!-- Comments Section -->
+    <div class="border-t pt-6">
+      <h2 class="text-2xl font-semibold mb-4">Comments (<%= @comments.count %>)</h2>
+
+      <% if can? :create, Comment.new(task: @task) %>
+        <%= form_with(url: project_task_comments_path(@project, @task), method: :post, class: "mb-6") do |form| %>
+          <div class="mb-2">
+            <%= form.text_area :content, rows: 3, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Add a comment..." %>
+          </div>
+          <%= form.submit "Add Comment", class: "bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600 cursor-pointer" %>
+        <% end %>
+      <% end %>
+
+      <div class="space-y-4">
+        <% @comments.each do |comment| %>
+          <div class="bg-gray-50 rounded-lg p-4">
+            <div class="flex justify-between items-start mb-2">
+              <div>
+                <span class="font-semibold"><%= comment.user.email %></span>
+                <span class="text-sm text-gray-500 ml-2"><%= time_ago_in_words(comment.created_at) %> ago</span>
+              </div>
+              <% if can? :destroy, comment %>
+                <%= button_to "Delete", project_task_comment_path(@project, @task, comment), method: :delete, data: { confirm: "Are you sure?" }, class: "text-red-600 text-sm hover:underline" %>
+              <% end %>
+            </div>
+            <p class="text-gray-700"><%= comment.content %></p>
+          </div>
+        <% end %>
+      </div>
+
+      <% if @comments.empty? %>
+        <p class="text-gray-500 text-center py-8">No comments yet. Be the first to comment!</p>
+      <% end %>
+    </div>
+  </div>
+</div>

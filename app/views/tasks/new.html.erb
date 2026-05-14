@@ -1,2 +1,65 @@
-<h1>Tasks#new</h1>
-<p>Find me in app/views/tasks/new.html.erb</p>
+<div class="container mx-auto px-4 py-8 max-w-2xl">
+  <h1 class="text-3xl font-bold mb-6">New Task</h1>
+
+  <%= form_with(model: [@project, @task], class: "space-y-6") do |form| %>
+    <% if @task.errors.any? %>
+      <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
+        <h2 class="font-bold mb-2"><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
+        <ul class="list-disc list-inside">
+          <% @task.errors.each do |error| %>
+            <li><%= error.full_message %></li>
+          <% end %>
+        </ul>
+      </div>
+    <% end %>
+
+    <div>
+      <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.text_field :title, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Task title" %>
+    </div>
+
+    <div>
+      <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.text_area :description, rows: 5, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Task description" %>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :status, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.select :status, [['To Do', 'todo'], ['In Progress', 'in_progress'], ['Done', 'done']], {}, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+
+      <div>
+        <%= form.label :priority, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.select :priority, [['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], {}, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+    </div>
+
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <%= form.label :due_date, class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.date_field :due_date, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+
+      <div>
+        <%= form.label :assignee_id, "Assign to", class: "block text-sm font-medium text-gray-700 mb-2" %>
+        <%= form.select :assignee_id, @project.members.map { |u| [u.email, u.id] }, { include_blank: "Unassigned" }, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
+      </div>
+    </div>
+
+    <div>
+      <%= form.label :label_ids, "Labels", class: "block text-sm font-medium text-gray-700 mb-2" %>
+      <%= form.collection_check_boxes :label_ids, @project.labels, :id, :name do |b| %>
+        <div class="inline-block mr-4">
+          <%= b.check_box class: "mr-1" %>
+          <%= b.label class: "text-sm" %>
+        </div>
+      <% end %>
+    </div>
+
+    <div class="flex gap-4">
+      <%= form.submit "Create Task", class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 cursor-pointer" %>
+      <%= link_to "Cancel", @project, class: "bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400" %>
+    </div>
+  <% end %>
+</div>

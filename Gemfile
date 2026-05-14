@@ -74,3 +74,5 @@ gem "cancancan", "~> 3.6"
 gem "paranoia", "~> 3.1"
 
 gem "paper_trail", "~> 17.0"
+
+gem "tailwindcss-rails", "~> 3.0"
