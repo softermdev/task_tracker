@@ -1,16 +1,72 @@
-<h2>Forgot your password?</h2>
-
-<%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post }) do |f| %>
-  <%= render "devise/shared/error_messages", resource: resource %>
-
-  <div class="field">
-    <p><%= f.label :email %></p>
-    <p><%= f.email_field :email, autofocus: true, autocomplete: "email" %></p>
+<div class="min-h-screen flex bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900">
+  <!-- Left Side - Branding -->
+  <div class="hidden lg:flex lg:w-1/2 bg-gradient-to-br from-gray-800 to-gray-900 items-center justify-center p-12 relative overflow-hidden">
+    <div class="absolute inset-0 opacity-10">
+      <div class="absolute top-20 left-20 w-72 h-72 bg-yellow-500 rounded-full filter blur-3xl"></div>
+      <div class="absolute bottom-20 right-20 w-96 h-96 bg-yellow-600 rounded-full filter blur-3xl"></div>
+    </div>
+    <div class="relative z-10 text-center">
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-20 h-20 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-2xl shadow-2xl mb-6">
+          <svg class="w-12 h-12 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+        <h1 class="text-5xl font-bold text-white mb-4">Password Reset</h1>
+        <p class="text-xl text-gray-400 max-w-md">Don't worry, we'll help you get back into your account</p>
+      </div>
+    </div>
   </div>
 
-  <div class="actions">
-    <%= f.submit "Send me password reset instructions" %>
-  </div>
-<% end %>
+  <!-- Right Side - Reset Form -->
+  <div class="flex-1 flex items-center justify-center p-8 sm:p-12">
+    <div class="w-full max-w-md">
+      <div class="bg-gray-800 rounded-2xl shadow-2xl border border-gray-700 p-8 sm:p-10">
+        <!-- Mobile Logo -->
+        <div class="lg:hidden text-center mb-8">
+          <div class="inline-flex items-center justify-center w-16 h-16 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl shadow-lg mb-4">
+            <svg class="w-10 h-10 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+            </svg>
+          </div>
+          <h2 class="text-2xl font-bold text-white">Task Tracker</h2>
+        </div>
 
-<%= render "devise/shared/links" %>
+        <div class="mb-8">
+          <h2 class="text-3xl font-bold text-white mb-2">Forgot password?</h2>
+          <p class="text-gray-400">Enter your email and we'll send you instructions to reset your password</p>
+        </div>
+
+        <%= form_for(resource, as: resource_name, url: password_path(resource_name), html: { method: :post, class: "space-y-6" }) do |f| %>
+          <%= render "devise/shared/error_messages", resource: resource %>
+
+          <div>
+            <%= f.label :email, class: "block text-sm font-medium text-gray-300 mb-2" %>
+            <%= f.email_field :email, autofocus: true, autocomplete: "email", class: "appearance-none block w-full px-4 py-3 bg-gray-900 border border-gray-600 rounded-lg text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-yellow-500 focus:border-transparent transition duration-200", placeholder: "Enter your email address" %>
+          </div>
+
+          <div>
+            <%= f.submit "Send reset instructions", class: "w-full flex justify-center py-3 px-4 border border-transparent rounded-lg text-gray-900 font-semibold bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:ring-offset-gray-800 transition duration-200 cursor-pointer shadow-lg" %>
+          </div>
+
+          <div class="relative">
+            <div class="absolute inset-0 flex items-center">
+              <div class="w-full border-t border-gray-700"></div>
+            </div>
+            <div class="relative flex justify-center text-sm">
+              <span class="px-2 bg-gray-800 text-gray-400">Remember your password?</span>
+            </div>
+          </div>
+
+          <div class="text-center">
+            <%= link_to "Back to sign in", new_user_session_path, class: "inline-flex items-center justify-center w-full py-3 px-4 border border-gray-600 rounded-lg text-gray-300 font-medium hover:bg-gray-700 hover:border-gray-500 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-yellow-500 focus:ring-offset-gray-800 transition duration-200" %>
+          </div>
+        <% end %>
+      </div>
+
+      <p class="mt-6 text-center text-sm text-gray-500">
+        © 2026 Task Tracker. All rights reserved.
+      </p>
+    </div>
+  </div>
+</div>
