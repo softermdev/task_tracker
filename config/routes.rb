@@ -10,6 +10,10 @@ Rails.application.routes.draw do
   # User search for adding members
   get "users/search", to: "users#search"
 
+  # Profile
+  get "profile", to: "users#profile", as: :profile
+  patch "profile", to: "users#update_profile"
+
   # Projects with nested resources
   resources :projects do
     resources :tasks do

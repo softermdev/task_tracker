@@ -19,6 +19,7 @@ class User < ApplicationRecord
 
   # Validations
   validates :email, presence: true, uniqueness: true
+  validates :name, length: { maximum: 50 }, allow_blank: true
 
   # Scopes
   scope :admins, -> { where(admin: true) }
