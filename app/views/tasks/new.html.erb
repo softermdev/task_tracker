@@ -1,65 +1,260 @@
-<div class="container mx-auto px-4 py-8 max-w-2xl">
-  <h1 class="text-3xl font-bold mb-6">New Task</h1>
+<% content_for :title, "New Task" %>
 
-  <%= form_with(model: [@project, @task], class: "space-y-6") do |form| %>
-    <% if @task.errors.any? %>
-      <div class="bg-red-50 border border-red-200 text-red-700 px-4 py-3 rounded">
-        <h2 class="font-bold mb-2"><%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:</h2>
-        <ul class="list-disc list-inside">
-          <% @task.errors.each do |error| %>
-            <li><%= error.full_message %></li>
+<div class="min-h-screen">
+  <div class="sticky top-0 z-20 bg-gray-900/80 backdrop-blur-md border-b border-gray-700/60 pt-6 pb-6 px-6 sm:px-10">
+    <div class="max-w-3xl mx-auto">
+      <div class="flex items-center justify-between">
+        <div class="flex items-center">
+          <%= link_to project_path(@project), class: "mr-4 p-2 rounded-lg bg-gray-800 hover:bg-gray-700 transition-colors" do %>
+            <svg class="w-5 h-5 text-gray-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+            </svg>
           <% end %>
-        </ul>
-      </div>
-    <% end %>
-
-    <div>
-      <%= form.label :title, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.text_field :title, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Task title" %>
-    </div>
-
-    <div>
-      <%= form.label :description, class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.text_area :description, rows: 5, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500", placeholder: "Task description" %>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <%= form.label :status, class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= form.select :status, [['To Do', 'todo'], ['In Progress', 'in_progress'], ['Review', 'review'], ['Done', 'done']], {}, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-      </div>
-
-      <div>
-        <%= form.label :priority, class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= form.select :priority, [['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], {}, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-      </div>
-    </div>
-
-    <div class="grid grid-cols-2 gap-4">
-      <div>
-        <%= form.label :due_date, class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= form.date_field :due_date, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-      </div>
-
-      <div>
-        <%= form.label :assignee_id, "Assign to", class: "block text-sm font-medium text-gray-700 mb-2" %>
-        <%= form.select :assignee_id, User.all.map { |u| [u.email, u.id] }, { include_blank: "Unassigned" }, class: "w-full px-3 py-2 border border-gray-300 rounded-md focus:outline-none focus:ring-2 focus:ring-blue-500" %>
-      </div>
-    </div>
-
-    <div>
-      <%= form.label :label_ids, "Labels", class: "block text-sm font-medium text-gray-700 mb-2" %>
-      <%= form.collection_check_boxes :label_ids, @project.labels, :id, :name do |b| %>
-        <div class="inline-block mr-4">
-          <%= b.check_box class: "mr-1" %>
-          <%= b.label class: "text-sm" %>
+          <div>
+            <h1 class="text-3xl font-bold text-white mb-1 tracking-tight">New Task</h1>
+            <p class="text-sm text-gray-400">Create a task for <%= @project.name %></p>
+          </div>
         </div>
-      <% end %>
+      </div>
     </div>
+  </div>
 
-    <div class="flex gap-4">
-      <%= form.submit "Create Task", class: "bg-blue-500 text-white px-6 py-2 rounded hover:bg-blue-600 cursor-pointer" %>
-      <%= link_to "Cancel", @project, class: "bg-gray-300 text-gray-700 px-6 py-2 rounded hover:bg-gray-400" %>
+  <div class="max-w-3xl mx-auto px-6 sm:px-10 py-8 relative">
+    <div class="absolute top-0 left-1/2 -translate-x-1/2 w-full h-64 bg-yellow-500/5 filter blur-[100px] pointer-events-none"></div>
+
+    <div class="relative">
+      <div class="bg-gray-800/60 rounded-2xl border border-gray-700/50 backdrop-blur-sm shadow-2xl overflow-hidden">
+        
+        <!-- Header -->
+        <div class="bg-gray-800/80 px-8 py-6 border-b border-gray-700/60">
+          <div class="flex items-center space-x-4">
+            <div class="w-14 h-14 bg-gradient-to-br from-yellow-400 to-yellow-600 rounded-xl flex items-center justify-center shadow-lg">
+              <svg class="w-7 h-7 text-gray-900" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path>
+              </svg>
+            </div>
+            <div>
+              <h2 class="text-xl font-bold text-white">Task Details</h2>
+              <p class="text-gray-400 text-sm">Fill in the information below</p>
+            </div>
+          </div>
+        </div>
+
+        <!-- Form -->
+        <div class="px-8 py-8">
+          <%= form_with(model: [@project, @task], class: "space-y-6") do |form| %>
+            
+            <% if @task.errors.any? %>
+              <div class="bg-red-900/20 border border-red-500/30 rounded-xl px-5 py-4">
+                <div class="flex items-start space-x-3">
+                  <div class="flex-shrink-0 mt-0.5">
+                    <svg class="w-5 h-5 text-red-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                  </div>
+                  <div>
+                    <h3 class="text-red-400 font-medium text-sm mb-2">
+                      <%= pluralize(@task.errors.count, "error") %> prohibited this task from being saved:
+                    </h3>
+                    <ul class="list-disc list-inside space-y-1">
+                      <% @task.errors.each do |error| %>
+                        <li class="text-red-300/80 text-sm"><%= error.full_message %></li>
+                      <% end %>
+                    </ul>
+                  </div>
+                </div>
+              </div>
+            <% end %>
+
+            <!-- Title -->
+            <div class="space-y-2">
+              <%= form.label :title, class: "block text-sm font-semibold text-gray-300 uppercase tracking-wider" do %>
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z"></path>
+                  </svg>
+                  <span>Task Title</span>
+                  <span class="text-red-500">*</span>
+                </div>
+              <% end %>
+              <%= form.text_field :title, 
+                  class: "w-full px-5 py-3.5 bg-gray-900/50 border border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200",
+                  placeholder: "e.g., Design homepage mockup, Fix login bug, Write API documentation" %>
+            </div>
+
+            <!-- Description -->
+            <div class="space-y-2">
+              <%= form.label :description, class: "block text-sm font-semibold text-gray-300 uppercase tracking-wider" do %>
+                <div class="flex items-center space-x-2">
+                  <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h7"></path>
+                  </svg>
+                  <span>Description</span>
+                </div>
+              <% end %>
+              <%= form.text_area :description, 
+                  rows: 4, 
+                  class: "w-full px-5 py-3.5 bg-gray-900/50 border border-gray-600 rounded-xl text-white placeholder-gray-500 focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200 resize-none",
+                  placeholder: "Describe the task details, requirements, and acceptance criteria..." %>
+            </div>
+
+            <!-- Status & Priority -->
+            <div class="grid grid-cols-2 gap-5">
+              <div class="space-y-2">
+                <%= form.label :status, class: "block text-sm font-semibold text-gray-300 uppercase tracking-wider" do %>
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+                    </svg>
+                    <span>Status</span>
+                  </div>
+                <% end %>
+                <div class="relative">
+                  <%= form.select :status, 
+                      [['To Do', 'todo'], ['In Progress', 'in_progress'], ['Review', 'review'], ['Done', 'done']], 
+                      {}, 
+                      class: "w-full px-5 py-3.5 bg-gray-900/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200 appearance-none cursor-pointer" %>
+                  <svg class="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+
+              <div class="space-y-2">
+                <%= form.label :priority, class: "block text-sm font-semibold text-gray-300 uppercase tracking-wider" do %>
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 21v-4m0 0V5a2 2 0 012-2h6.5l1 1H21l-3 6 3 6h-8.5l-1-1H5a2 2 0 00-2 2zm9-13.5V9"></path>
+                    </svg>
+                    <span>Priority</span>
+                  </div>
+                <% end %>
+                <div class="relative">
+                  <%= form.select :priority, 
+                      [['Low', 'low'], ['Medium', 'medium'], ['High', 'high']], 
+                      { include_blank: "Select priority" }, 
+                      class: "w-full px-5 py-3.5 bg-gray-900/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200 appearance-none cursor-pointer" %>
+                  <svg class="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Due Date & Assignee -->
+            <div class="grid grid-cols-2 gap-5">
+              <div class="space-y-2">
+                <%= form.label :due_date, class: "block text-sm font-semibold text-gray-300 uppercase tracking-wider" do %>
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+                    </svg>
+                    <span>Due Date</span>
+                  </div>
+                <% end %>
+                <%= form.date_field :due_date, 
+                    class: "w-full px-5 py-3.5 bg-gray-900/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200 cursor-pointer" %>
+              </div>
+
+              <div class="space-y-2">
+                <%= form.label :assignee_id, "Assign To", class: "block text-sm font-semibold text-gray-300 uppercase tracking-wider" do %>
+                  <div class="flex items-center space-x-2">
+                    <svg class="w-4 h-4 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                      <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M16 7a4 4 0 11-8 0 4 4 0 018 0zM12 14a7 7 0 00-7 7h14a7 7 0 00-7-7z"></path>
+                    </svg>
+                    <span>Assign To</span>
+                  </div>
+                <% end %>
+                <div class="relative">
+                  <%= form.select :assignee_id, 
+                      @project.members.map { |u| [u.email, u.id] }, 
+                      { include_blank: "Unassigned" }, 
+                      class: "w-full px-5 py-3.5 bg-gray-900/50 border border-gray-600 rounded-xl text-white focus:outline-none focus:border-yellow-500 focus:ring-2 focus:ring-yellow-500/20 transition-all duration-200 appearance-none cursor-pointer" %>
+                  <svg class="w-5 h-5 absolute right-4 top-1/2 -translate-y-1/2 text-gray-500 pointer-events-none" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 9l-7 7-7-7"></path>
+                  </svg>
+                </div>
+              </div>
+            </div>
+
+            <!-- Actions -->
+            <div class="border-t border-gray-700/60 pt-6 mt-6">
+              <div class="flex flex-col sm:flex-row gap-4">
+                <%= form.submit class: "flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-gradient-to-r from-yellow-400 to-yellow-500 hover:from-yellow-500 hover:to-yellow-600 text-gray-900 rounded-xl transition-all duration-200 font-bold text-base shadow-[0_0_15px_rgba(234,179,8,0.2)] hover:shadow-[0_0_20px_rgba(234,179,8,0.4)] cursor-pointer" do %>
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 4v16m8-8H4"></path>
+                  </svg>
+                  Create Task
+                <% end %>
+                
+                <%= link_to project_path(@project), class: "flex-1 inline-flex items-center justify-center px-6 py-3.5 bg-gray-700 text-gray-300 rounded-xl hover:bg-gray-600 hover:text-white transition-all duration-200 font-semibold border border-gray-600" do %>
+                  <svg class="w-5 h-5 mr-2" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                  </svg>
+                  Cancel
+                <% end %>
+              </div>
+            </div>
+          <% end %>
+        </div>
+
+        <!-- Footer -->
+        <div class="bg-gray-900/60 px-8 py-4 border-t border-gray-700/60">
+          <div class="flex items-center justify-between">
+            <div class="flex items-center space-x-2 text-gray-500 text-xs font-medium">
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+              <span>Fields marked with <span class="text-red-500">*</span> are required</span>
+            </div>
+            <div class="flex items-center space-x-2 text-gray-500 text-xs">
+              <svg class="w-4 h-4 text-gray-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 7v10a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-6l-2-2H5a2 2 0 00-2 2z"></path>
+              </svg>
+              <span><%= @project.name %></span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Tips -->
+      <div class="mt-6 grid grid-cols-1 md:grid-cols-3 gap-4">
+        <div class="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+          <div class="flex items-center space-x-2 mb-2">
+            <div class="w-6 h-6 bg-blue-500/10 border border-blue-500/20 rounded-lg flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-blue-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-gray-300 font-medium text-sm">Be Specific</h3>
+          </div>
+          <p class="text-gray-500 text-xs">Write clear, actionable task titles.</p>
+        </div>
+
+        <div class="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+          <div class="flex items-center space-x-2 mb-2">
+            <div class="w-6 h-6 bg-yellow-500/10 border border-yellow-500/20 rounded-lg flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-yellow-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4l3 3m6-3a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-gray-300 font-medium text-sm">Set Deadlines</h3>
+          </div>
+          <p class="text-gray-500 text-xs">Add due dates to keep track of progress.</p>
+        </div>
+
+        <div class="bg-gray-800/40 rounded-xl p-4 border border-gray-700/50">
+          <div class="flex items-center space-x-2 mb-2">
+            <div class="w-6 h-6 bg-purple-500/10 border border-purple-500/20 rounded-lg flex items-center justify-center">
+              <svg class="w-3.5 h-3.5 text-purple-400" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 20h5v-2a3 3 0 00-5.356-1.857M17 20H7m10 0v-2c0-.656-.126-1.283-.356-1.857M7 20H2v-2a3 3 0 015.356-1.857M7 20v-2c0-.656.126-1.283.356-1.857m0 0a5.002 5.002 0 019.288 0M15 7a3 3 0 11-6 0 3 3 0 016 0zm6 3a2 2 0 11-4 0 2 2 0 014 0zM7 10a2 2 0 11-4 0 2 2 0 014 0z"></path>
+              </svg>
+            </div>
+            <h3 class="text-gray-300 font-medium text-sm">Assign Owners</h3>
+          </div>
+          <p class="text-gray-500 text-xs">Assign tasks to team members.</p>
+        </div>
+      </div>
     </div>
-  <% end %>
+  </div>
 </div>

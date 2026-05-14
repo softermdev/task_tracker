@@ -7,6 +7,9 @@ Rails.application.routes.draw do
   # Dashboard
   get "dashboard", to: "dashboard#index"
   
+  # User search for adding members
+  get "users/search", to: "users#search"
+
   # Projects with nested resources
   resources :projects do
     resources :tasks do

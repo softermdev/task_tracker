@@ -1,16 +1,59 @@
-<div id="<%= dom_id task %>" class="border rounded p-4 hover:bg-gray-50">
-  <%= link_to task.title, project_task_path(task.project, task), class: "text-blue-600 hover:underline font-medium" %>
-  <div class="flex gap-2 mt-2 text-sm">
-    <span class="bg-gray-100 px-2 py-1 rounded capitalize"><%= task.priority %></span>
-    <span class="bg-indigo-100 text-indigo-700 px-2 py-1 rounded capitalize"><%= task.status.humanize %></span>
-    <% if task.due_date %>
-      <span class="<%= task.overdue? ? 'bg-red-100 text-red-700' : 'bg-blue-100 text-blue-700' %> px-2 py-1 rounded">
-        <%= task.due_date %>
+<div id="<%= dom_id task %>" class="flex items-center justify-between p-4 hover:bg-gray-700/30 transition-colors group border-b border-gray-700/30 last:border-b-0">
+  <div class="flex items-center flex-1 min-w-0">
+    <%= link_to project_task_path(task.project, task), class: "text-white font-medium group-hover:text-yellow-400 transition-colors truncate" do %>
+      <%= task.title %>
+    <% end %>
+  </div>
+  <div class="flex items-center gap-3 ml-4">
+    <span class="inline-flex items-center px-2.5 py-1 rounded-lg text-xs font-bold border <%= 
+      case task.status
+      when 'todo' then 'bg-blue-500/10 text-blue-400 border-blue-500/20'
+      when 'in_progress' then 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+      when 'review' then 'bg-purple-500/10 text-purple-400 border-purple-500/20'
+      when 'done' then 'bg-green-500/10 text-green-400 border-green-500/20'
+      else 'bg-gray-700 text-gray-300 border-gray-600'
+      end
+    %>">
+      <span class="w-1.5 h-1.5 rounded-full mr-1.5 <%= 
+        case task.status
+        when 'todo' then 'bg-blue-400'
+        when 'in_progress' then 'bg-yellow-400'
+        when 'review' then 'bg-purple-400'
+        when 'done' then 'bg-green-400'
+        else 'bg-gray-400'
+        end
+      %>"></span>
+      <%= task.status.humanize %>
+    </span>
+    
+    <% if task.priority %>
+      <span class="px-2.5 py-1 text-xs font-bold uppercase rounded-lg border <%= 
+        case task.priority
+        when 'high' then 'bg-red-500/10 text-red-400 border-red-500/20'
+        when 'medium' then 'bg-yellow-500/10 text-yellow-400 border-yellow-500/20'
+        when 'low' then 'bg-green-500/10 text-green-400 border-green-500/20'
+        else 'bg-gray-700 text-gray-300 border-gray-600'
+        end
+      %>">
+        <%= task.priority %>
       </span>
     <% end %>
+    
     <% if task.assignee %>
-      <span class="bg-green-100 text-green-700 px-2 py-1 rounded">
-        <%= task.assignee.email %>
+      <div class="flex items-center">
+        <div class="w-6 h-6 bg-gradient-to-br from-blue-400 to-blue-600 rounded-full flex items-center justify-center text-white text-xs font-bold mr-1.5">
+          <%= task.assignee.email.first.upcase %>
+        </div>
+        <span class="text-gray-400 text-xs"><%= task.assignee.email.split('@').first %></span>
+      </div>
+    <% end %>
+    
+    <% if task.due_date %>
+      <span class="flex items-center text-xs <%= task.overdue? ? 'text-red-400' : 'text-gray-400' %>">
+        <svg class="w-3.5 h-3.5 mr-1 text-gray-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"></path>
+        </svg>
+        <%= task.due_date.strftime("%b %d") %>
       </span>
     <% end %>
   </div>
