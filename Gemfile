@@ -65,14 +65,14 @@ group :test do
   gem "selenium-webdriver"
 end
 
-gem "devise", "~> 5.0"
+gem "devise"
 
-gem "rolify", "~> 6.0"
+gem "rolify"
 
-gem "cancancan", "~> 3.6"
+gem "cancancan"
 
-gem "paranoia", "~> 3.1"
+gem "paranoia"
 
-gem "paper_trail", "~> 17.0"
+gem "paper_trail"
 
-gem "tailwindcss-rails", "~> 3.0"
+gem "tailwindcss-rails"
