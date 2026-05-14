@@ -2,14 +2,16 @@
 
 A modern, full-featured task management application built with Ruby on Rails 8. Features a beautiful dark-themed UI with Kanban-style task boards, real-time updates, and team collaboration tools.
 
-![Task Tracker Banner](https://via.placeholder.com/1200x400/1f2937/fbbf24?text=Task+Tracker+-+Modern+Project+Management)
+![Task Tracker Banner](<img width="1908" height="935" alt="image" src="https://github.com/user-attachments/assets/4906b106-46f7-4c91-998c-302398df4888" />
+)
 
 ## ✨ Features
 
 ### 🎯 Kanban Board
 Drag-and-drop task management with four customizable columns: To Do, In Progress, Review, and Done.
 
-![Kanban Board](https://via.placeholder.com/800x500/1f2937/3b82f6?text=Kanban+Board+with+Drag+and+Drop)
+![Kanban Board](<img width="1906" height="936" alt="image" src="https://github.com/user-attachments/assets/b789e7db-ef36-4114-9fa2-005f8da0f44b" />
+)
 
 ### 📁 Project Management
 - Create and manage multiple projects
@@ -17,7 +19,8 @@ Drag-and-drop task management with four customizable columns: To Do, In Progress
 - Track project progress with visual stats
 - Organize tasks within project context
 
-![Project List](https://via.placeholder.com/800x500/1f2937/fbbf24?text=Project+Dashboard)
+![Project List](<img width="1911" height="941" alt="image" src="https://github.com/user-attachments/assets/8b2d75b3-c139-4065-a2fe-2570f8e39b57" />
+)
 
 ### ✅ Task Management
 - Create, edit, and delete tasks
@@ -26,7 +29,8 @@ Drag-and-drop task management with four customizable columns: To Do, In Progress
 - Assign tasks to team members
 - Add labels for categorization
 
-![Task Details](https://via.placeholder.com/800x500/1f2937/22c55e?text=Task+Details+Page)
+![Task Details](<img width="1911" height="927" alt="image" src="https://github.com/user-attachments/assets/66cb0e7f-5de4-4443-96c4-47d955e95695" />
+)
 
 ### 💬 Comments & Collaboration
 - Add comments to tasks
@@ -38,7 +42,8 @@ Drag-and-drop task management with four customizable columns: To Do, In Progress
 - Role-based access control with CanCanCan
 - User search functionality
 
-![Team Members](https://via.placeholder.com/800x400/1f2937/8b5cf6?text=Team+Collaboration)
+![Team Members](<img width="380" height="650" alt="image" src="https://github.com/user-attachments/assets/4ae677ae-6169-481f-8ea9-912bc0c7c557" />
+)
 
 ### 🔐 Authentication & Authorization
 - Secure user authentication with Devise
@@ -50,7 +55,8 @@ Drag-and-drop task management with four customizable columns: To Do, In Progress
 - Mobile-friendly navigation
 - Smooth animations and transitions
 
-![Mobile View](https://via.placeholder.com/400x700/1f2937/fbbf24?text=Mobile+Responsive)
+![Mobile View](<img width="450" height="889" alt="image" src="https://github.com/user-attachments/assets/ca533dc6-04ed-4146-a620-a3eecd321b5f" />
+)
 
 ## 🛠️ Tech Stack
 
@@ -134,7 +140,8 @@ This starts both the Rails server and Tailwind CSS watcher.
 2. Enter a project name and description
 3. Click **"Create Project"**
 
-![New Project Form](https://via.placeholder.com/600x400/1f2937/fbbf24?text=Create+New+Project)
+![New Project Form](<img width="1888" height="931" alt="image" src="https://github.com/user-attachments/assets/df05787d-7757-403c-ad45-c88d2538c303" />
+)
 
 ### Adding Tasks
 
@@ -149,7 +156,8 @@ This starts both the Rails server and Tailwind CSS watcher.
    - Assignee
 4. Click **"Create Task"**
 
-![New Task Form](https://via.placeholder.com/600x500/1f2937/3b82f6?text=Create+New+Task)
+![New Task Form](<img width="773" height="907" alt="image" src="https://github.com/user-attachments/assets/db1cff50-ca10-417d-b020-3d38847bade5" />
+)
 
 ### Using the Kanban Board
 
@@ -163,7 +171,8 @@ This starts both the Rails server and Tailwind CSS watcher.
 2. In the sidebar, use the search box to find users by email
 3. Click on a user to add them to the project
 
-![Add Member](https://via.placeholder.com/400x300/1f2937/8b5cf6?text=Add+Team+Members)
+![Add Member](<img width="260" height="329" alt="image" src="https://github.com/user-attachments/assets/5c297057-4b05-4ff5-a1bb-beb1fbdb9cf8" />
+)
 
 ## 🔌 API Endpoints
 
